@@ -1,0 +1,58 @@
+2026-04-27 03:22:03,241 [ERROR] Evaluation failed for synthetic.csv; continuing with others.
+2026-04-27 03:22:03,242 [ERROR] Traceback (most recent call last):
+  File "/home/ubuntu/Final/evaluate_synthetic_data.py", line 2166, in main
+    row = evaluate_one_method(
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/Final/evaluate_synthetic_data.py", line 1875, in evaluate_one_method
+    _, syn, common = load_and_align(
+                     ^^^^^^^^^^^^^^^
+  File "/home/ubuntu/Final/evaluate_synthetic_data.py", line 239, in load_and_align
+    real = pd.read_csv(real_path)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'synthetic.csv'
+
+2026-04-27 03:23:38,480 [ERROR] Evaluation failed for synthetic_vanilla_gan.csv; continuing with others.
+2026-04-27 03:23:38,481 [ERROR] Traceback (most recent call last):
+  File "/home/ubuntu/Final/evaluate_synthetic_data.py", line 2166, in main
+    row = evaluate_one_method(
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/Final/evaluate_synthetic_data.py", line 1875, in evaluate_one_method
+    _, syn, common = load_and_align(
+                     ^^^^^^^^^^^^^^^
+  File "/home/ubuntu/Final/evaluate_synthetic_data.py", line 239, in load_and_align
+    real = pd.read_csv(real_path)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'synthetic_vanilla_gan.csv'
+
+2026-04-27 03:24:33,887 [WARNING]   Clipping synthetic time to real range [0.033, 90.838]: 806 below, 82 above (out of 8735)
+2026-04-27 03:28:21,441 [WARNING]   [downstream] Cox failed: ConvergenceError: Convergence halted due to matrix inversion problems. Suspicion is high collinearity. Please see the following tips in the lifelines documentation: https://lifelines.readthedocs.io/en/latest/Examples.html#problems-with-convergence-in-the-cox-proportional-hazard-modelMatrix is singular.

@@ -1,0 +1,2 @@
+Method,n_synthetic,C-Index TRTR (XGB) (↑),C-Index TSTR (XGB) (↑),C-Index TSTS (XGB) (↑),C-Index TRTR (Cox) (↑),C-Index TSTR (Cox) (↑),Feat-rank ρ (↑)
+synthetic_vanilla_gan,8735,0.60474,0.48709,0.92029,0.62972,,-0.20588

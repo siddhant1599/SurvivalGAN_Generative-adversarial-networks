@@ -89,16 +89,16 @@ export class AppComponent {
     },
   ];
 
-  readonly survivalGanDataset = 'Rotterdam 2232 survival';
+  readonly survivalGanDataset = 'MSK-IMPACT 50k survival';
   readonly survivalGanIter = 3000;
   readonly survivalGanBatchSize = 256;
   readonly survivalGanLatentDim = 128;
-  readonly survivalGanGeneratorHiddenLayers = 2;
-  readonly survivalGanGeneratorHiddenUnits = 128;
-  readonly survivalGanGeneratorActivation = 'GELU';
-  readonly survivalGanGeneratorResidual = 'Enabled (concatenation skip)';
-  readonly survivalGanDiscriminatorHiddenLayers = 3;
-  readonly survivalGanDiscriminatorHiddenUnits = 256;
+  readonly survivalGanGeneratorHiddenLayers = 3;
+  readonly survivalGanGeneratorHiddenUnits = 250;
+  readonly survivalGanGeneratorActivation = 'TANH';
+  readonly survivalGanGeneratorResidual = 'Enabled';
+  readonly survivalGanDiscriminatorHiddenLayers = 2;
+  readonly survivalGanDiscriminatorHiddenUnits = 250;
   readonly survivalGanDiscriminatorActivation = 'LeakyReLU';
   readonly survivalGanDiscriminatorDropout = 0.1;
   readonly survivalGanOptimizer =
@@ -108,8 +108,9 @@ export class AppComponent {
 
   readonly survivalGeneratorLayers: ArchLayer[] = [
     { name: 'Input', detail: 'noise + conditional vector' },
-    { name: 'Residual MLP Block 1', detail: 'Linear → GELU (skip concat)' },
-    { name: 'Residual MLP Block 2', detail: 'Linear → GELU (skip concat)' },
+    { name: 'Residual MLP Block 1', detail: 'Linear → TANH' },
+    { name: 'Residual MLP Block 2', detail: 'Dropout(0.1) → Linear → TANH' },
+    { name: 'Residual MLP Block 3', detail: 'Dropout(0.1) → Linear → TANH' },
     { name: 'Linear', detail: 'project to encoded tabular feature space' },
     {
       name: 'Mixed Activation Head',
@@ -117,7 +118,7 @@ export class AppComponent {
     },
     {
       name: 'Output',
-      detail: 'encoded synthetic survival row (later inverse transformed)',
+      detail: 'encoded synthetic survival row',
     },
   ];
 

@@ -1,0 +1,2 @@
+Method,n_synthetic,JSD (↓),Wasserstein (↓),MMD (↓),Precision (↑),Recall (↑),Density (↑),Coverage (↑),α-Precision (↑),β-Recall (↑),Inv-KL (↑)
+synthetic,34938,0.00625,0.09591,0.00040,0.96027,0.96533,0.97553,0.90067,0.92175,0.46200,0.97190

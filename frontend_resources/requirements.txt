@@ -1,8 +1,0 @@
-# Versions used to produce the committed figures.
-# Pin major versions so a future re-run doesn't fight a Plotly API change.
-pandas>=2.0,<3.0
-numpy>=1.24,<3.0
-matplotlib>=3.7,<4.0
-plotly>=5.20,<6.0
-scikit-learn>=1.3,<2.0
-kaleido==0.2.1   # optional — only needed for the static PNG export of Figure 2

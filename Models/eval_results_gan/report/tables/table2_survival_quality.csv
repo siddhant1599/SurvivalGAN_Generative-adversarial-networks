@@ -1,0 +1,2 @@
+Method,n_synthetic,Optimism (→0),KM Divergence (↓),Short-sighted (↓),|Δ Cens. rate| (↓),W(t|E=1) (↓),W(t|E=0) (↓)
+synthetic_vanilla_gan,8735,0.02420,0.03946,0.00000,0.01076,3.44454,3.07139

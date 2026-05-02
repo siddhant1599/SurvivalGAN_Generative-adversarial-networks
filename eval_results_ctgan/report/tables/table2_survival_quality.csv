@@ -1,2 +1,0 @@
-Method,n_synthetic,Optimism (→0),KM Divergence (↓),Short-sighted (↓),|Δ Cens. rate| (↓),W(t|E=1) (↓),W(t|E=0) (↓)
-synthetic_ctgan,8735,0.02677,0.09131,0.05752,0.13108,1.97028,6.07111

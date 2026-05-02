@@ -1,7 +1,0 @@
-stage,rows,note
-Raw MSK-IMPACT,54331,45 columns
-With survival labels,50044,OS time + status non-null
-"Time ∈ (0, 600) mo",49627,drop zero / impossible times
-Patient-level,43673,1 sample / patient (Primary preferred)
-Train (80%),34938,event rate ≈ 38.6%
-Test (20%),8735,event rate ≈ 38.6%

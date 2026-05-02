@@ -1,0 +1,13 @@
+method,cancer_type,n_real,n_syn,optimism,km_divergence,short_sightedness,censoring_rate_diff,real_event_rate,syn_event_rate
+synthetic_vanilla_gan,10,1301,970,-0.10538,0.11060,0.00000,0.11628,0.35588,0.47216
+synthetic_vanilla_gan,9,1215,998,0.04035,0.05972,0.00000,0.01788,0.42469,0.40681
+synthetic_vanilla_gan,1,1032,29,,,,,0.34302,0.03448
+synthetic_vanilla_gan,3,952,171,0.35355,0.35355,0.18340,0.25500,0.31933,0.06433
+synthetic_vanilla_gan,13,549,633,-0.21753,0.21753,0.00000,0.28042,0.26776,0.54818
+synthetic_vanilla_gan,12,520,849,0.11395,0.11534,0.00000,0.03448,0.56923,0.53475
+synthetic_vanilla_gan,4,424,296,0.24508,0.24508,0.00000,0.17497,0.25943,0.08446
+synthetic_vanilla_gan,11,370,947,0.05581,0.14443,0.00000,0.17828,0.34865,0.52693
+synthetic_vanilla_gan,15,366,643,0.04279,0.07476,0.00000,0.12520,0.39891,0.52411
+synthetic_vanilla_gan,6,357,547,0.35455,0.35461,0.00000,0.31847,0.49580,0.17733
+synthetic_vanilla_gan,0,349,7,,,,,0.32092,0.00000
+synthetic_vanilla_gan,5,319,410,0.49584,0.49585,0.00000,0.40086,0.52038,0.11951

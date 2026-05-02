@@ -1,0 +1,2 @@
+Method,n_synthetic,JSD (↓),Wasserstein (↓),MMD (↓),Precision (↑),Recall (↑),Density (↑),Coverage (↑),α-Precision (↑),β-Recall (↑),Inv-KL (↑)
+synthetic_ctgan,8735,0.01203,0.16297,0.00040,0.89773,0.97000,0.83069,0.91440,0.71800,0.36947,0.96221

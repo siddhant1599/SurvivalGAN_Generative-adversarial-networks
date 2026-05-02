@@ -1,0 +1,2 @@
+Method,n_synthetic,Det. AUC XGB (→0.5),Det. AUC MLP (→0.5),Det. AUC GMM (→0.5)
+synthetic_vanilla_gan,8735,0.99996,0.51925,
