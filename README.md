@@ -1,17 +1,17 @@
-# SurvivalGAN: Applications on the MSK-IMPACT 50K Cohort
+# SurvivalGAN - Generative adversarial network: Applications on the MSK-IMPACT 50K Cohort
 
-Replication and extension of **SurvivalGAN** (Norcliffe et al., 2023) on the
-**MSK-IMPACT 50K** pan-cancer registry, benchmarked against **CTGAN** and a
-plain **vanilla GAN** baseline.
+Extension of **SurvivalGAN** (Norcliffe et al., 2023) on the
+**MSK-IMPACT 50K** dataset, benchmarked against **CTGAN** and a
+plain **GAN** baseline.
 
-> Authors: Simbarashe Mpofu, Siddhant Saxena, Zixuan Zhao
-> George Washington University — see `Research_Paper.pdf` for the full write-up.
+> See `Research_Paper.pdf` for the full write-up.
+> Authors: Siddhant Saxena, Zixuan Zhao, Simbarashe Mpofu
 
 The repository ships:
 - A reproducible preprocessing pipeline for the raw MSK-IMPACT archive.
-- Three trainable generative models for survival data (Vanilla GAN, CTGAN, SurvivalGAN).
-- A unified evaluation harness producing marginal, joint, and survival-specific metrics.
-- A Flask + Angular reference app that serves the trained vanilla GAN generator.
+- Three trainable generative models for survival data (GAN, CTGAN, SurvivalGAN).
+- A unified evaluation harness producing marginal, joint, and survival specific metrics.
+- A Flask + Angular reference app that serves the trained GAN generator.
 
 ---
 
@@ -21,36 +21,36 @@ The repository ships:
 survivalGAN/
 ├── Models/                       # All ML code, datasets, checkpoints, eval results
 │   ├── preprocessing.py          # Raw MSK-IMPACT → train/test split + metadata JSON
-│   ├── model_gan.py              # Vanilla GAN Generator class (shared by train + serve)
-│   ├── train_gan.py              # Vanilla GAN training + checkpoint bundle writer
+│   ├── model_gan.py              # GAN Generator class (shared by train + serve)
+│   ├── train_gan.py              # GAN training + checkpoint bundle writer
 │   ├── train_ctgan.py            # CTGAN baseline (sdv/ctgan)
 │   ├── survGAN.py                # SurvivalGAN core: WGAN-GP + DeepHit + XGB TTE
 │   ├── train_survGAN_aws.py      # Driver around survGAN.SurvivalPipeline (EC2-friendly)
 │   ├── test_gan.py               # Local sanity check for the saved GAN bundle
-│   ├── evaluate_synthetic_data.py# Synthcity-based eval (stats / detection / survival)
+│   ├── evaluate_synthetic_data.py# Synthcity based eval (stats / detection / survival)
 │   ├── datasets_raw/             # MSK-IMPACT raw export
 │   ├── datasets_cleaned/         # Train/test splits + per-method synthetic CSVs
-│   ├── gan_checkpoint/           # Vanilla GAN deployable bundle (served by backend)
-│   ├── eval_results_gan/         # Vanilla GAN metrics + figures
+│   ├── gan_checkpoint/           # GAN deployable bundle (served by backend)
+│   ├── eval_results_gan/         # GAN metrics + figures
 │   ├── eval_results_ctgan/       # CTGAN metrics + figures
 │   └── eval_results_survGan/     # SurvivalGAN metrics + figures
-├── Backend/                      # Flask inference server for the vanilla GAN
+├── Backend/                      # Flask inference server for the  GAN
 │   ├── app.py
 │   └── requirements.txt
 ├── Frontend/                     # Angular 14 web UI
-└── Research_Paper.pdf            # Submitted manuscript
+└── Research_Paper.pdf            # Manuscript
 ```
 
 ---
 
 ## Dataset: MSK-IMPACT 50K
 
-The MSK-IMPACT 50K release (Bandlamudi et al., 2026) records overall survival
+The MSK-IMPACT 50K release records overall survival
 together with demographic, histopathological, and genomic variables for 48,179
 unique cancer patients across 64 cancer types.
 
-`Models/preprocessing.py` reduces the raw 45-column / 54,331-sample export to a
-modeling-ready cohort:
+`Models/preprocessing.py` reduces the raw 45 column / 54,331 sample export to a
+modeling ready cohort:
 
 | Stage | What happens | Result |
 |---|---|---|
@@ -59,7 +59,7 @@ modeling-ready cohort:
 | Cleaning | clip *Pathologist Tumor Purity* to `[0, 100]`, median-impute continuous, `Unknown` for categorical, label-encode categoricals, **preserve integer dtypes** | clean cohort |
 | Split | 80 / 20 train / test, both with the same 38.6 % event rate | 34,938 train / 8,735 test |
 
-Two artefacts are emitted alongside the CSVs:
+Two artifacts are emitted alongside the CSVs:
 - `survival_gan_train.csv`, `survival_gan_test.csv`
 - `survival_gan_column_metadata.json` — integer columns + per-column min/max bounds
   used at generation time to enforce physical constraints.
@@ -74,10 +74,10 @@ with `time` (months) and `status` (event) as targets.
 
 ## Models
 
-### 1. Vanilla GAN — `train_gan.py` + `model_gan.py`
+### 1. GAN Baseline — `train_gan.py` + `model_gan.py`
 
 Plain MLP generator and discriminator on the standardized full feature vector
-(covariates + `time` + `status`). Sanity baseline; not survival-aware.
+(covariates + `time` + `status`). Sanity baseline; not survival aware.
 
 | | Spec |
 |---|---|
@@ -95,14 +95,13 @@ scaler_gan.joblib    # fitted StandardScaler
 metadata_gan.json    # column order, discrete cols, bounds, latent_dim
 model_gan.py         # Generator class definition
 ```
-This bundle is what the Flask backend loads.
 
 ### 2. CTGAN — `train_ctgan.py`
 
-Tabular-only baseline using the `ctgan` library with mode-specific normalization
+Tabular only baseline using the `ctgan` library with mode specific normalization
 for continuous columns and a conditional vector for categorical columns.
-Trained for 500 epochs, batch size 500, with the same discrete-column list as
-above (`Cancer Type`, `Sex`, `MSI Type`, `status`, etc.). Survival-naïve — it
+Trained for 500 epochs, batch size 500, with the same discrete column list as
+above (`Cancer Type`, `Sex`, `MSI Type`, `status`, etc.). Survival naive — it
 sees `time` and `status` as ordinary tabular columns.
 
 ### 3. SurvivalGAN — `survGAN.py` + `train_survGAN_aws.py`
@@ -120,23 +119,17 @@ A three-model architecture specialized for survival data:
 - **Conditional WGAN-GP** — generates covariates `x` conditioned on event status
   `e` and a class label `C = f(x)` from a Bayesian Gaussian Mixture Model
   (`encoder_max_clusters = 5` in our config, vs. paper's 10, to mitigate
-  spurious multi-modality on the heterogeneous pan-cancer cohort).
+  spurious multi modality on the heterogeneous pan cancer cohort).
 - **DeepHit** survival head — `S(t | x)` evaluated at 100 time horizons.
   Uses our local `LocalSurvivalFunctionTTE` wrapper (replaces synthcity's buggy
-  `SurvivalFunctionTimeToEvent` plugin and adds log-time clamping).
+  `SurvivalFunctionTimeToEvent` plugin and adds log time clamping).
 - **XGBoost time regressor** — predicts `log T` from `[x, S(·|x), e]`. Bumped
   to `n_estimators=500`, `max_depth=6` (vs. 200 / 5 in the paper) to scale to
   the larger MSK-IMPACT cohort.
 
 `train_survGAN_aws.py` is a thin CLI wrapper around `survGAN.SurvivalPipeline`
-that adds: file logging, GPU memory reporting, pickled checkpoint, post-
-generation precision matching, and physical-constraint enforcement (rounds
-integer columns, clips columns to bounds from the metadata JSON so generated
-samples don't violate biology — e.g. negative *Mutation Count* or *Fraction
-Genome Altered* > 1).
-
-Hyper-parameters used in our run (deviations from Norcliffe et al. 2023 marked
-×):
+that adds: file logging, GPU memory reporting, pickled checkpoint, post
+generation precision matching, and physical constraint enforcement.
 
 | Component | Parameter | Ours | Paper |
 |---|---|---|---|
@@ -144,8 +137,6 @@ Hyper-parameters used in our run (deviations from Norcliffe et al. 2023 marked
 | XGB TTE | estimators / max-depth / booster | 500 / 6 / gbtree × | 200 / 5 / Dart |
 | WGAN-GP | iters / batch / G width / dropout | 3000 / 256 / 256 / 0.0 × | 1500 / 500 / 250 / 0.1 |
 | WGAN-GP | gradient penalty λ / encoder clusters | 10 ✓ / 5 × | 10 / 10 |
-
-Outputs `synthetic_survgan.csv` plus a pickled pipeline checkpoint.
 
 ---
 
@@ -165,9 +156,9 @@ real train/test splits:
   synthetic training data.
 
 Each method directory (`eval_results_gan/`, `eval_results_ctgan/`,
-`eval_results_survGan/`) contains `comparison.csv` (headline metrics),
-`per_method/synthetic/` (full metric tables), and `report/figures/`,
-`report/tables/` (publication-quality plots).
+`eval_results_survGan/`) contains `comparison.csv`,
+`per_method/synthetic/`, and `report/figures/`,
+`report/tables/`.
 
 ### Headline results (held-out test set, `n = 8,735`)
 
@@ -182,12 +173,12 @@ Each method directory (`eval_results_gan/`, `eval_results_ctgan/`,
 | XGBoost C-index TSTR | **0.628** | 0.539 | SurvivalGAN |
 | Feat-importance Spearman ρ | **0.733** | 0.027 | SurvivalGAN |
 
-SurvivalGAN dominates every survival-distribution metric and preserves the
-covariate→outcome dependency that downstream survival learners exploit
+SurvivalGAN dominates every survival distribution metric and preserves the
+covariate outcome dependency that downstream survival learners exploit
 (ρ = 0.73 vs. 0.03 for CTGAN), confirming Norcliffe et al.'s thesis that
 survival structure should be modelled **explicitly** outside the GAN.
 β-recall (≈0.45) remains the open weakness — the generator covers
-high-density regions well but under-samples the tails.
+high density regions well but under-samples the tails.
 
 ---
 
@@ -196,8 +187,7 @@ high-density regions well but under-samples the tails.
 ### Reproduce the ML pipeline
 
 Run from the `Models/` directory. Expects MSK-IMPACT raw CSV under
-`Models/datasets_raw/`. A GPU is recommended for SurvivalGAN; the vanilla GAN
-trains in minutes on CPU.
+`Models/datasets_raw/`. A GPU is recommended for SurvivalGAN.
 
 ```bash
 cd Models
@@ -232,7 +222,7 @@ python evaluate_synthetic_data.py \
 python test_gan.py
 ```
 
-### Serve the vanilla GAN
+### Serve the GAN
 
 ```bash
 cd Backend
@@ -280,7 +270,7 @@ Backend additionally needs `flask>=2.3` and `flask-cors>=4.0`
 ## Citation
 
 If you use this code or the trained checkpoints, please cite the accompanying
-manuscript (`Research_Paper.pdf`) and the original SurvivalGAN paper:
+manuscript (`Research_Paper.pdf`):
 
 > Norcliffe, A. *et al.* **SurvivalGAN: Generating Time-to-Event Data for
 > Survival Analysis.** AISTATS, 2023.
