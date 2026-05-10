@@ -1,4 +1,4 @@
-# SurvivalGAN - Generative adversarial network: Applications on the MSK-IMPACT 50K Cohort
+# SurvivalGAN - Generative adversarial network
 
 Extension of **SurvivalGAN** (Norcliffe et al., 2023) on the
 **MSK-IMPACT 50K** dataset, benchmarked against **CTGAN** and a
